@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: meu-site
+  name: locust
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: locust-k8s.henriqzimer.com.br
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: locust
+                port:
+                  number: 8089

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: meu-site
+  name: meu-site
+  labels:
+    app: meu-site
+spec:
+  selector:
+    app: meu-site
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      name: tcp-app
+  type: ClusterIP

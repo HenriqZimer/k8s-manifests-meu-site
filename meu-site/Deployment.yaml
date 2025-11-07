@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: meu-site
+  name: meu-site
+  labels:
+    app: meu-site
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: meu-site
+  template:
+    metadata:
+      labels:
+        app: meu-site
+    spec:
+      containers:
+        - name: meu-site
+          image: henriquezimermann/meu-site:latest
+          ports:
+            - containerPort: 3000
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+      imagePullSecrets:
+        - name: dockerhub-secret
