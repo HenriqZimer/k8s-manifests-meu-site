@@ -11,10 +11,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - kube-site.henriqzimer.com.br
+    - henriqzimer.com.br
     secretName: wildcard-henriqzimer-tls
   rules:
-  - host: kube-site.henriqzimer.com.br
+  - host: henriqzimer.com.br
     http:
       paths:
       - path: /
