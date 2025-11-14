@@ -10,7 +10,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: meu-site
-  minReplicas: 3
+  minReplicas: 5
   maxReplicas: 50
   metrics:
     - type: Resource
@@ -18,27 +18,27 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: 30
     - type: Resource
       resource:
         name: memory
         target:
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: 30
     - type: ContainerResource
       containerResource:
         container: meu-site
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: 30
     - type: ContainerResource
       containerResource:
         container: meu-site
         name: memory
         target:
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: 30
   behavior:
     scaleUp:
       stabilizationWindowSeconds: 5

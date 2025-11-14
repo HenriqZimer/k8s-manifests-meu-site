@@ -6,7 +6,7 @@ metadata:
   labels:
     app: meu-site
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       app: meu-site
@@ -19,14 +19,14 @@ spec:
         - name: meu-site
           image: henriquezimermann/meu-site:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 80
           imagePullPolicy: Always
           resources:
             requests:
               memory: "128Mi"
-              cpu: "100m"
+              cpu: "150m"
             limits:
               memory: "256Mi"
-              cpu: "200m"
+              cpu: "300m"
       imagePullSecrets:
         - name: dockerhub-secret

@@ -3,10 +3,18 @@ kind: Ingress
 metadata:
   namespace: meu-site
   name: locust
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - locust.henriqzimer.com.br
+    secretName: wildcard-henriqzimer-tls
   rules:
-    - host: locust-k8s.henriqzimer.com.br
+    - host: locust.henriqzimer.com.br
       http:
         paths:
           - path: /

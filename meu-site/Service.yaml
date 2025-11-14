@@ -10,7 +10,7 @@ spec:
     app: meu-site
   ports:
     - protocol: TCP
-      port: 3000
-      targetPort: 3000
-      name: tcp-app
+      port: 80
+      targetPort: 80
+      name: http
   type: ClusterIP
