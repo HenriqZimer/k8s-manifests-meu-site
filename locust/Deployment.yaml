@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: meu-site
+  namespace: locust
   labels:
     app: locust
   name: locust
@@ -22,7 +22,7 @@ spec:
             - name: LOCUST_LOCUSTFILE
               value: "/usr/src/app/scripts/locustfile.py"
             - name: LOCUST_HOST
-              value: "http://meu-site:80"
+              value: "http://meu-site.meu-site.svc.cluster.local:80"
           ports:
             - containerPort: 8089
           imagePullPolicy: Always
