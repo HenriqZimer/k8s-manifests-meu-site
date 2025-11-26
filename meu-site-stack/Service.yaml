@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: meu-site-stack
+  name: meu-site-frontend
+  labels:
+    app: meu-site-frontend
+spec:
+  selector:
+    app: meu-site-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: frontend
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: meu-site-stack
+  name: meu-site-backend
+  labels:
+    app: meu-site-backend
+spec:
+  selector:
+    app: meu-site-backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      name: backend
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: meu-site-stack
+  name: meu-site-db
+  labels:
+    app: meu-site-db
+spec:
+  selector:
+    app: meu-site-backend
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+      name: db
+  type: ClusterIP

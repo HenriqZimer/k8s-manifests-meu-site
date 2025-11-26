@@ -78,3 +78,17 @@ delete-all:
 	@echo "Removendo todos os recursos do namespace meu-site..."
 	@kubectl delete -f meu-site/ --ignore-not-found=true
 	@kubectl delete -f locust/ --ignore-not-found=true
+
+cleanup-pvs:
+	@echo "🔧 Verificando e liberando PVs..."
+	@for pv in meu-site-db-pv; do \
+		if kubectl get pv $$pv >/dev/null 2>&1; then \
+			STATUS=$$(kubectl get pv $$pv -o jsonpath='{.status.phase}'); \
+			if [ "$$STATUS" = "Released" ]; then \
+				echo "  🔓 Liberando $$pv..."; \
+				kubectl patch pv $$pv --type json -p '[{"op": "remove", "path": "/spec/claimRef"}]' 2>/dev/null || true; \
+			fi; \
+		fi; \
+	done
+	@echo "✅ PVs verificados"
+	@echo "========================================"

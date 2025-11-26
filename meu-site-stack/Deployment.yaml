@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: meu-site-stack
+  name: meu-site-frontend
+  labels:
+    app: meu-site-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: meu-site-frontend
+  template:
+    metadata:
+      labels:
+        app: meu-site-frontend
+    spec:
+      containers:
+        - name: meu-site-frontend
+          image: henriquezimermann/meu-site-frontend:latest
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "300m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: meu-site-stack
+  name: meu-site-backend
+  labels:
+    app: meu-site-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: meu-site-backend
+  template:
+    metadata:
+      labels:
+        app: meu-site-backend
+        db: meu-site-db
+    spec:
+      volumes:
+        - name: mongo-data
+          persistentVolumeClaim:
+            claimName: meu-site-db-pvc
+      containers:
+        - name: meu-site-db
+          image: docker.io/mongo:latest
+          args: ["--bind_ip", "0.0.0.0"]
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: meu-site-stack-db-credentials
+                  key: MONGO_INITDB_ROOT_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: meu-site-stack-db-credentials
+                  key: MONGO_INITDB_ROOT_PASSWORD
+            - name: MONGO_INITDB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: meu-site-stack-db-credentials
+                  key: MONGO_INITDB_DATABASE
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /data/db
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+        - name: meu-site-backend
+          image: henriquezimermann/meu-site-backend:latest
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: meu-site-stack-db-credentials
+                  key: MONGODB_URI
+          ports:
+            - containerPort: 5000
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "150m"
+            limits:
+              memory: "256Mi"
+              cpu: "300m"
