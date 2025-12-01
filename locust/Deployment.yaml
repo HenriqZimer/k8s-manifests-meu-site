@@ -22,7 +22,7 @@ spec:
             - name: LOCUST_LOCUSTFILE
               value: "/usr/src/app/scripts/locustfile.py"
             - name: LOCUST_HOST
-              value: "http://meu-site.meu-site.svc.cluster.local:80"
+              value: "http://meu-site-frontend.meu-site-stack.svc.cluster.local:80"
           ports:
             - containerPort: 8089
           imagePullPolicy: Always
